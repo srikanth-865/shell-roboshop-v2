@@ -1,5 +1,6 @@
 
-
+source ./common.sh
+check_root
 
 dnf module disable redis -y &>> $LOGS_FILE
 dnf module enable redis:7 -y &>> $LOGS_FILE
@@ -12,3 +13,4 @@ VALIDATE $? "Allowing remote connections"
 systemctl enable redis &>> $LOGS_FILE
 systemctl start redis &>> $LOGS_FILE
 VALIDATE $? "Started Redis"
+print_total_time
