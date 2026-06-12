@@ -1,5 +1,6 @@
 
 source ./common.sh
+check_root
 cp mongo.repo /etc/yum.repos.d/mongo.repo
 VALIDATE $? "Adding Mongo repo"
 
@@ -14,3 +15,5 @@ VALIDATE $? "Allowing remote connections to MongoDB"
 
 systemctl restart mongod
 VALIDATE $? "Restarting MongoDB"
+
+print_total_time

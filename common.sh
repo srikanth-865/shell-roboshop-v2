@@ -13,10 +13,15 @@ Y="\e[33m"
 N="\e[0m"
 TIMESTAMP=$(date "+%Y-%m-%d %H:%M:%S")
 
+echo -e "$TIMESTAMP [INFO] Script started"
+
+check_root()   
+{
 if [ $USERID -ne 0 ]; then
     echo -e "$TIMESTAMP [ERROR] $R Please run this script with root access $N" | tee -a $LOGS_FILE
     exit 1
 fi
+}
 
 VALIDATE(){
     if [ $1 -ne 0 ]; then
@@ -25,4 +30,8 @@ VALIDATE(){
     else
         echo -e "$TIMESTAMP [INFO] $2 ... $G SUCCESS $N" | tee -a $LOGS_FILE
     fi
+}
+
+print_total_time(){
+    echo -e "$TIMESTAMP [INFO] Script executed in $G $SECONDS seconds $N"
 }
