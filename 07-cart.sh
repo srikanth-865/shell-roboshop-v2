@@ -1,38 +1,11 @@
+ #!/bin/bash
 
+app_name=cart
+source ./common.sh
+check_root
 
-dnf module disable nodejs -y &>>$LOGS_FILE
-dnf module enable nodejs:20 -y  &>>$LOGS_FILE
-dnf install nodejs -y &>>$LOGS_FILE
-VALIDATE $? "Installing NodeJS:20"
-
-id roboshop &>>$LOGS_FILE
-if [ $? -ne 0 ]; then
-    useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop &>>$LOGS_FILE
-    VALIDATE $? "Creating roboshop system user"
-else
-    echo -e "System user roboshop already created ... $Y SKIPPING $N"
-fi
-
-rm -rf /app
-VALIDATE $? "Removing existing code"
-
-rm -rf /tmp/cart.zip
-VALIDATE $? "Removed cart zip"
-
-mkdir -p /app  &>>$LOGS_FILE
-VALIDATE $? "Creating app directory"
-
-curl -o /tmp/cart.zip https://roboshop-artifacts.s3.amazonaws.com/cart-v3.zip  &>>$LOGS_FILE
-cd /app 
-unzip /tmp/cart.zip &>>$LOGS_FILE
-VALIDATE $? "Downloaded and extracted cart code"
-
-npm install  &>>$LOGS_FILE
-VALIDATE $? "Installing dependencies"
-
-cp $SCRIPT_DIR/cart.service /etc/systemd/system/cart.service
-VALIDATE $? "Created systemctl service"
-
-systemctl enable cart &>>$LOGS_FILE
-systemctl restart cart &>>$LOGS_FILE
-VALIDATE $? "Restarting cart"
+app_setup
+nodejs_setup
+systemd_setup
+app_restart
+print_total_time
