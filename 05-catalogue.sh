@@ -1,4 +1,7 @@
+#!/bin/bash
 
+source ./common.sh
+check_root
 
 dnf module disable nodejs -y &>>$LOGS_FILE
 dnf module enable nodejs:20 -y  &>>$LOGS_FILE
