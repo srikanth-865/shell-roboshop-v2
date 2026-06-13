@@ -4,7 +4,6 @@ app_name=frontend
 source ./common.sh
 check_root
 
-
 dnf module disable nginx -y &>> $LOGS_FILE
 dnf module enable nginx:1.24 -y &>> $LOGS_FILE
 dnf install nginx -y &>> $LOGS_FILE
@@ -21,7 +20,7 @@ VALIDATE $? "Downloaded and extracted frontend code"
 rm -rf /etc/nginx/nginx.conf
 VALIDATE $? "Removed Default conf"
 
-cp nginx.conf /etc/nginx/nginx.conf
+cp $SCRIPT_DIR/nginx.conf /etc/nginx/nginx.conf
 VALIDATE $? "Copied roboshop nginx conf"
 
 systemctl restart nginx
